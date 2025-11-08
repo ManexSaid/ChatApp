@@ -37,7 +37,7 @@ public sealed class ServerCore : IDisposable
         }
         catch (OperationCanceledException)
         {
-            // Server is stopping
+            
         }
     }
 

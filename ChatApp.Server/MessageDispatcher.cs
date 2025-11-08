@@ -2,7 +2,7 @@ using ChatApp.Shared;
 
 namespace ChatApp.Server;
 
-// Mediator Pattern implementation
+
 public sealed class MessageDispatcher : IDisposable
 {
     private readonly List<IMessageObserver> _observers;
@@ -57,7 +57,7 @@ public sealed class MessageDispatcher : IDisposable
             _lock.ExitReadLock();
         }
 
-        // Use Task.WhenAll for parallel execution
+        
         var tasks = observersCopy.Select(observer => 
             observer.SendMessageAsync(message));
         

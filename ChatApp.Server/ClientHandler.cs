@@ -30,7 +30,7 @@ public sealed class ClientHandler : IDisposable, IMessageObserver
     {
         try
         {
-            // First message should be the username
+            
             var welcomeMessage = await _reader.ReadLineAsync();
             if (welcomeMessage != null)
             {
@@ -38,7 +38,7 @@ public sealed class ClientHandler : IDisposable, IMessageObserver
                 _username = message.Sender;
                 Console.WriteLine($"Client connected: {_username} (ID: {Id})");
                 
-                // Notify all clients about new user
+                
                 await _dispatcher.BroadcastAsync(new ChatMessage
                 {
                     Sender = "Server",
@@ -55,7 +55,7 @@ public sealed class ClientHandler : IDisposable, IMessageObserver
 
     var message = MessageSerializer.Deserialize(data);
     
-    // For text messages, use the client's actual username as sender
+    
     if (message.Type == MessageType.Text)
     {
         message = message with { Sender = _username ?? "Unknown", Timestamp = DateTime.UtcNow };
