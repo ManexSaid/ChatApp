@@ -1,6 +1,6 @@
 using System.Net.Sockets;
 using System.Text;
-using ChatApp.Shared;
+
 
 namespace ChatApp.Server;
 
@@ -55,17 +55,9 @@ public sealed class ClientHandler : IDisposable, IMessageObserver
 
                 var message = MessageSerializer.Deserialize(data);
 
+                message = message with { Sender = _username ?? "User", Timestamp = DateTime.UtcNow };
 
-                if (message.Type == MessageType.Text)
-                {
-                    message = message with { Sender = _username ?? "Unknown", Timestamp = DateTime.UtcNow };
-                }
-                else
-                {
-                    message = message with { Timestamp = DateTime.UtcNow };
-                }
-
-                await _dispatcher.BroadcastAsync(message);
+                await _dispatcher.BroadcastAsync(message with { Timestamp = DateTime.UtcNow });
             }
         }
         catch (Exception ex)
