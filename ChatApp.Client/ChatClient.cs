@@ -29,7 +29,7 @@ public sealed class ChatClient : IDisposable
         _reader = new StreamReader(_stream, Encoding.UTF8);
         _writer = new StreamWriter(_stream, Encoding.UTF8) { AutoFlush = true };
 
-        // Send username as first message
+        
         var joinMessage = new ChatMessage
         {
             Sender = username,
@@ -40,7 +40,7 @@ public sealed class ChatClient : IDisposable
         
         await _writer.WriteLineAsync(MessageSerializer.Serialize(joinMessage));
 
-        // Start listening for messages
+        
         _ = Task.Run(ListenForMessagesAsync, _cancellationTokenSource.Token);
     }
 
@@ -59,7 +59,7 @@ public sealed class ChatClient : IDisposable
         }
         catch (OperationCanceledException)
         {
-            // Expected when cancellation is requested
+            
         }
         catch (Exception ex)
         {
@@ -76,7 +76,7 @@ public sealed class ChatClient : IDisposable
 
         var message = new ChatMessage
         {
-            Sender = "User", // This will be overridden by server with actual username
+            Sender = "User", 
             Content = content,
             Timestamp = DateTime.UtcNow,
             Type = MessageType.Text

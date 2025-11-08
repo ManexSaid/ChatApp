@@ -2,7 +2,7 @@ using ChatApp.Shared;
 
 namespace ChatApp.Client;
 
-// This class demonstrates event-based message handling
+
 public class MessageHandler
 {
     public event EventHandler<string>? TextMessageReceived;
