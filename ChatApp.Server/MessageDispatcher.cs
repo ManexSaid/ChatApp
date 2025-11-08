@@ -46,7 +46,7 @@ public sealed class MessageDispatcher : IDisposable
     public async Task BroadcastAsync(ChatMessage message)
     {
         List<IMessageObserver> observersCopy;
-        
+
         _lock.EnterReadLock();
         try
         {
@@ -57,10 +57,10 @@ public sealed class MessageDispatcher : IDisposable
             _lock.ExitReadLock();
         }
 
-        
-        var tasks = observersCopy.Select(observer => 
+
+        var tasks = observersCopy.Select(observer =>
             observer.SendMessageAsync(message));
-        
+
         await Task.WhenAll(tasks);
     }
 

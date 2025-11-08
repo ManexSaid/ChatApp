@@ -16,7 +16,7 @@ public class MessageHandlerTests
             Content = "Hello",
             Type = MessageType.Text
         };
-        
+
         string? receivedMessage = null;
         handler.TextMessageReceived += (sender, msg) => receivedMessage = msg;
 
@@ -38,7 +38,7 @@ public class MessageHandlerTests
             Content = "User joined",
             Type = MessageType.System
         };
-        
+
         string? receivedMessage = null;
         handler.SystemMessageReceived += (sender, msg) => receivedMessage = msg;
 

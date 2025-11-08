@@ -30,15 +30,15 @@ public sealed class ClientHandler : IDisposable, IMessageObserver
     {
         try
         {
-            
+
             var welcomeMessage = await _reader.ReadLineAsync();
             if (welcomeMessage != null)
             {
                 var message = MessageSerializer.Deserialize(welcomeMessage);
                 _username = message.Sender;
                 Console.WriteLine($"Client connected: {_username} (ID: {Id})");
-                
-                
+
+
                 await _dispatcher.BroadcastAsync(new ChatMessage
                 {
                     Sender = "Server",
@@ -49,24 +49,24 @@ public sealed class ClientHandler : IDisposable, IMessageObserver
             }
 
             while (_tcpClient.Connected)
-{
-    var data = await _reader.ReadLineAsync();
-    if (data == null) break;
+            {
+                var data = await _reader.ReadLineAsync();
+                if (data == null) break;
 
-    var message = MessageSerializer.Deserialize(data);
-    
-    
-    if (message.Type == MessageType.Text)
-    {
-        message = message with { Sender = _username ?? "Unknown", Timestamp = DateTime.UtcNow };
-    }
-    else
-    {
-        message = message with { Timestamp = DateTime.UtcNow };
-    }
-    
-    await _dispatcher.BroadcastAsync(message);
-}
+                var message = MessageSerializer.Deserialize(data);
+
+
+                if (message.Type == MessageType.Text)
+                {
+                    message = message with { Sender = _username ?? "Unknown", Timestamp = DateTime.UtcNow };
+                }
+                else
+                {
+                    message = message with { Timestamp = DateTime.UtcNow };
+                }
+
+                await _dispatcher.BroadcastAsync(message);
+            }
         }
         catch (Exception ex)
         {

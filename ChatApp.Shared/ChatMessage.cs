@@ -35,7 +35,7 @@ public static class MessageSerializer
 
     public static ChatMessage Deserialize(string json)
     {
-        return JsonSerializer.Deserialize<ChatMessage>(json, Options) 
+        return JsonSerializer.Deserialize<ChatMessage>(json, Options)
             ?? throw new InvalidOperationException("Failed to deserialize message");
     }
 }

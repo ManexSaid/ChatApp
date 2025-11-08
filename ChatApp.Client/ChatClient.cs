@@ -24,12 +24,12 @@ public sealed class ChatClient : IDisposable
     {
         _tcpClient = new TcpClient();
         await _tcpClient.ConnectAsync(host, port);
-        
+
         _stream = _tcpClient.GetStream();
         _reader = new StreamReader(_stream, Encoding.UTF8);
         _writer = new StreamWriter(_stream, Encoding.UTF8) { AutoFlush = true };
 
-        
+
         var joinMessage = new ChatMessage
         {
             Sender = username,
@@ -37,10 +37,10 @@ public sealed class ChatClient : IDisposable
             Type = MessageType.Join,
             Timestamp = DateTime.UtcNow
         };
-        
+
         await _writer.WriteLineAsync(MessageSerializer.Serialize(joinMessage));
 
-        
+
         _ = Task.Run(ListenForMessagesAsync, _cancellationTokenSource.Token);
     }
 
@@ -59,7 +59,7 @@ public sealed class ChatClient : IDisposable
         }
         catch (OperationCanceledException)
         {
-            
+
         }
         catch (Exception ex)
         {
@@ -76,7 +76,7 @@ public sealed class ChatClient : IDisposable
 
         var message = new ChatMessage
         {
-            Sender = "User", 
+            Sender = "User",
             Content = content,
             Timestamp = DateTime.UtcNow,
             Type = MessageType.Text

@@ -27,7 +27,7 @@ try
     {
         var input = Console.ReadLine();
         if (string.IsNullOrEmpty(input)) continue;
-        
+
         if (input.Equals("/exit", StringComparison.OrdinalIgnoreCase))
             break;
 

@@ -24,7 +24,7 @@ public sealed class ServerCore : IDisposable
     {
         _listener.Start();
         _isRunning = true;
-        
+
         Console.WriteLine($"Server started on port {((IPEndPoint)_listener.LocalEndpoint).Port}");
 
         try
@@ -37,21 +37,21 @@ public sealed class ServerCore : IDisposable
         }
         catch (OperationCanceledException)
         {
-            
+
         }
     }
 
     private async Task HandleClientAsync(TcpClient tcpClient)
     {
         var clientHandler = new ClientHandler(tcpClient, _dispatcher);
-        
+
         lock (_clients)
         {
             _clients.Add(clientHandler);
         }
 
         _dispatcher.Subscribe(clientHandler);
-        
+
         try
         {
             await clientHandler.StartAsync();
@@ -59,12 +59,12 @@ public sealed class ServerCore : IDisposable
         finally
         {
             _dispatcher.Unsubscribe(clientHandler);
-            
+
             lock (_clients)
             {
                 _clients.Remove(clientHandler);
             }
-            
+
             Console.WriteLine($"Client disconnected. Total clients: {_clients.Count}");
         }
     }
@@ -72,10 +72,10 @@ public sealed class ServerCore : IDisposable
     public void Stop()
     {
         if (!_isRunning) return;
-        
+
         _isRunning = false;
         _cancellationTokenSource.Cancel();
-        
+
         lock (_clients)
         {
             foreach (var client in _clients)
@@ -84,7 +84,7 @@ public sealed class ServerCore : IDisposable
             }
             _clients.Clear();
         }
-        
+
         _listener.Stop();
         _dispatcher.Dispose();
         Console.WriteLine("Server stopped gracefully.");
